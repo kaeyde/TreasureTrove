@@ -2,656 +2,302 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Treasure Trove - Sailor Piece</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Trove</title>
 
-    <!-- TAB LOGO -->
-    <link rel="icon" type="image/png" href="Logo.png">
+  <link rel="icon" type="image/png" href="Logo.png">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: 0.3s ease;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #081532;
-            color: #fff7ef;
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    :root {
+      --bg-main: #081532;
+      --bg-footer: #020b24;
+      --text-main: #fff7ef;
+      --text-soft: #9cb0cf;
+      --line: rgba(255, 255, 255, 0.12);
+      --blue: #2563ff;
+      --blue-hover: #3b75ff;
+      --search-bg: #152444;
+      --tag-bg: #1a2947;
+      --header-height: 96px;
+    }
 
-        .container {
-            width: min(1260px, 90%);
-            margin: auto;
-        }
+    body.light-mode {
+      --bg-main: #f4f7ff;
+      --bg-footer: #e6ecff;
+      --text-main: #0b1220;
+      --text-soft: #4a5a75;
+      --search-bg: #dde6ff;
+      --tag-bg: #cdd9ff;
+    }
 
-        /* HEADER */
-        .site-header {
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
 
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+    .container {
+      width: min(1260px, 90%);
+      margin: 0 auto;
+    }
 
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #63a9ff, #b14cff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            white-space: nowrap;
-        }
+    /* HEADER */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      min-height: var(--header-height);
+      background: var(--bg-main);
+      border-bottom: 1px solid var(--line);
+      padding: 18px 0;
+      display: flex;
+      align-items: center;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            margin-left: 20px;
-            flex: 1;
-            flex-wrap: wrap;
-        }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
 
-        .nav-links a:hover {
-            color: #6fa7ff;
-        }
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #63a9ff, #b14cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        /* PAGE */
-        .page-content {
-            min-height: calc(100vh - 200px);
-            padding: 40px 0 100px;
-        }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      margin-left: 20px;
+      flex: 1;
+    }
 
-        /* BACK BUTTON */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: #152444;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #6fa7ff;
+    }
 
-        .back-btn:hover {
-            background: linear-gradient(90deg, #2563ff, #5a3fff);
-            transform: translateY(-2px);
-        }
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-        /* TITLE */
-        .page-title {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+    .search-box {
+      width: 260px;
+      height: 42px;
+      background: var(--search-bg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
 
-        .page-subtitle {
-            color: #9cb0cf;
-            margin-bottom: 30px;
-        }
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-main);
+    }
 
-        /* GRID */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
-        }
+    .theme-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 10px;
+      background: var(--search-bg);
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
 
-        .product-card {
-            background: #1a2947;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+    /* HERO */
+    .hero-section {
+      min-height: calc(100vh - var(--header-height));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
 
-        .product-card:hover {
-            transform: translateY(-4px);
-            background: #22365c;
-        }
+    .hero-content h1 {
+      font-size: 56px;
+      margin-bottom: 15px;
+    }
 
-        /* IMAGE */
-        .product-image {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            display: block;
-            background: #10203f;
-        }
+    .hero-content p {
+      color: var(--text-soft);
+      margin-bottom: 25px;
+    }
 
-        .product-body {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
+    .browse-btn {
+      background: var(--blue);
+      padding: 14px 28px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+    }
 
-        .product-title {
-            font-weight: bold;
-            margin-bottom: 6px;
-            line-height: 1.3;
-            min-height: 38px;
-        }
+    .browse-btn:hover {
+      background: var(--blue-hover);
+    }
 
-        .product-amount {
-            font-size: 13px;
-            color: #9bc5ff;
-            margin-bottom: 4px;
-        }
+    /* FOOTER */
+    .site-footer {
+      background: var(--bg-footer);
+      padding: 30px 0;
+      margin-top: 60px;
+    }
 
-        .product-stock {
-            font-size: 12px;
-            color: #9cb0cf;
-            margin-bottom: 10px;
-        }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
 
-        .product-price {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    .footer-column h3 {
+      margin-bottom: 10px;
+    }
 
-        .order-btn {
-            display: block;
-            text-align: center;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            margin-bottom: 6px;
-            color: white;
-            font-weight: 600;
-        }
+    .footer-column a,
+    .footer-column p {
+      color: var(--text-soft);
+      display: block;
+      margin-bottom: 5px;
+    }
 
-        .messenger-btn {
-            background: #2563ff;
-        }
+    .footer-bottom {
+      text-align: center;
+      margin-top: 15px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      color: var(--text-soft);
+    }
 
-        .messenger-btn:hover {
-            background: #3b75ff;
-        }
+    /* HELP BUTTON */
+    .help-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--blue);
+      border-radius: 50%;
+      color: white;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
 
-        .discord-btn {
-            background: #5a3fff;
-            margin-bottom: 0;
-        }
+    /* MOBILE */
+    @media (max-width: 768px) {
 
-        .discord-btn:hover {
-            background: #6b52ff;
-        }
+      /* 🔥 ONLY CHANGE APPLIED HERE */
+      .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
 
-        /* FOOTER */
-        .site-footer {
-            background: #020b24;
-            padding: 30px 0;
-        }
+      .footer-column {
+        text-align: left;
+      }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+      .nav-inner {
+        flex-direction: column;
+      }
 
-        .footer-column p,
-        .footer-column a,
-        .footer-grid p,
-        .footer-grid a {
-            color: #9cb0cf;
-            display: block;
-            margin-bottom: 5px;
-            line-height: 1.6;
-        }
+      .search-box {
+        width: 100%;
+      }
 
-        .footer-bottom {
-            text-align: center;
-            margin-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 10px;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width:1100px) {
-            .products-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width:768px) {
-            .nav-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .nav-links {
-                margin-left: 0;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-title {
-                font-size: 36px;
-            }
-        }
-
-        @media (max-width:480px) {
-            .container {
-                width: 92%;
-            }
-
-            .product-image {
-                height: 120px;
-            }
-
-            .product-title {
-                font-size: 14px;
-                min-height: 34px;
-            }
-
-            .product-amount,
-            .product-stock {
-                font-size: 11px;
-            }
-
-            .product-price {
-                font-size: 16px;
-            }
-
-            .order-btn {
-                font-size: 11px;
-                padding: 7px;
-            }
-        }
-    </style>
+      .hero-content h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <header class="site-header">
-        <div class="container nav-inner">
-            <a href="index.html" class="logo">Treasure Trove</a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="games.html">Games</a>
-            </nav>
-        </div>
-    </header>
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Treasure Trove</a>
 
-    <main class="page-content">
-        <div class="container">
+      <nav class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="games.html">Games</a>
+        <a href="https://www.facebook.com/share/g/18SvNHCSTW/" target="_blank">Facebook Group</a>
+        <a href="seller-profile.html">Seller's Profile</a>
+      </nav>
 
-            <a href="games.html" class="back-btn">← Back to Games</a>
+      <div class="nav-actions">
+        <button class="theme-btn" onclick="toggleTheme()">☼</button>
+      </div>
+    </div>
+  </header>
 
-            <h1 class="page-title">Sailor Piece</h1>
-            <p class="page-subtitle">Browse items and currency</p>
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to Treasure Trove</h1>
+      <p>Your trusted marketplace for gaming currency and accounts</p>
+      <a href="games.html" class="browse-btn">Browse Games</a>
+    </div>
+  </main>
 
-            <div class="products-grid">
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-column">
+        <h3>About</h3>
+        <p>Trusted marketplace since 2015</p>
+      </div>
 
-                <div class="product-card">
-                    <img src="images/Aura.png" alt="Aura Crate" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Aura Crate</h3>
-                        <p class="product-amount">₱1 = 2 pcs</p>
-                        <p class="product-stock">MIN: ₱25 = 50 pcs</p>
-                        <div class="product-price">₱25+</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
+      <div class="footer-column">
+        <h3>Payment</h3>
+        <p>GCash</p>
+        <p>Binance</p>
+      </div>
 
-                <div class="product-card">
-                    <img src="images/cosm.png" alt="Cosmetic Crate" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Cosmetic Crate</h3>
-                        <p class="product-amount">₱1 = 2 pcs</p>
-                        <p class="product-stock">MIN: ₱25 = 50 pcs</p>
-                        <div class="product-price">₱25+</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
+      <div class="footer-column">
+        <h3>Legal</h3>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
 
-                <div class="product-card">
-                    <img src="images/mchest.png" alt="Mythical Chest" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Mythical Chest</h3>
-                        <p class="product-amount">₱51 = 12.5k</p>
-                        <p class="product-stock">MIN: 12.5k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
+      <div class="footer-column">
+        <h3>Store</h3>
+        <a href="https://www.facebook.com/kaeydi" target="_blank">Facebook</a>
+      </div>
+    </div>
 
+    <div class="footer-bottom">
+      © 2026 Kaeyd
+    </div>
+  </footer>
 
-                <div class="product-card">
-                    <img src="images/secret.png" alt="Secret Item" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Secret Crate</h3>
-                        <p class="product-amount">₱?? = ??</p>
-                        <p class="product-stock">MIN: ??</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
+  <div class="help-btn">?</div>
 
-                <div class="product-card">
-                    <img src="images/frost.png" alt="Frost Relic" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Frost Relic</h3>
-                        <p class="product-amount">₱51 = 12.5k</p>
-                        <p class="product-stock">MIN: 12.5k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/rrr.png" alt="Race Reroll" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Race Reroll</h3>
-                        <p class="product-amount">₱102 = 1.5M</p>
-                        <p class="product-stock">MIN: 1.5M</p>
-                        <div class="product-price">₱102</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/trait.png" alt="Trait Reroll" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Trait Reroll</h3>
-                        <p class="product-amount">₱102 = 1.5M</p>
-                        <p class="product-stock">MIN: 1.5M</p>
-                        <div class="product-price">₱102</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/passive.png" alt="Passive Shard" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Passive Shard</h3>
-                        <p class="product-amount">₱51 = 350k</p>
-                        <p class="product-stock">MIN: 350k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-
-                <div class="product-card">
-                    <img src="images/crr.png" alt="Clan Reroll" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Clan Reroll</h3>
-                        <p class="product-amount">₱51 = 15k</p>
-                        <p class="product-stock">MIN: 15k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                                <div class="product-card">
-                    <img src="images/key.png" alt="Rush Key" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Rush Key</h3>
-                        <p class="product-amount">₱51 = 75k</p>
-                        <p class="product-stock">MIN: 75k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/tower.png" alt="Tower Key" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Tower Key</h3>
-                        <p class="product-amount">₱51 = 75k</p>
-                        <p class="product-stock">MIN: 75k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/boss.png" alt="Boss Key" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Boss Key</h3>
-                        <p class="product-amount">₱51 = 75k</p>
-                        <p class="product-stock">MIN: 75k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/tboss.png" alt="Boss Ticket" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Boss Ticket</h3>
-                        <p class="product-amount">₱51 = 75k</p>
-                        <p class="product-stock">MIN: 75k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-
-
-                <div class="product-card">
-                    <img src="images/chry.png" alt="Chrysalis Sigil" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Chrysalis Sigil</h3>
-                        <p class="product-amount">₱51 = 25k</p>
-                        <p class="product-stock">MIN: 25k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/abyss.png" alt="Abyss Sigil" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Abyss Sigil</h3>
-                        <p class="product-amount">₱51 = 50k</p>
-                        <p class="product-stock">MIN: 50k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/upper.png" alt="Upper Seal" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Upper Seal</h3>
-                        <p class="product-amount">₱51 = 50k</p>
-                        <p class="product-stock">MIN: 50k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/broken.png" alt="Upper Seal" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Broken Sword</h3>
-                        <p class="product-amount">₱?? = ??</p>
-                        <p class="product-stock">MIN: ??</p>
-                        <div class="product-price">₱??</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/power.png" alt="Power Shard" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Power Shard</h3>
-                        <p class="product-amount">₱51 = 50k</p>
-                        <p class="product-stock">MIN: 50k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="images/grail.png" alt="Dark Grail" class="product-image">
-                    <div class="product-body">
-                        <h3 class="product-title">Dark Grail</h3>
-                        <p class="product-amount">₱51 = 150k</p>
-                        <p class="product-stock">MIN: 150k</p>
-                        <div class="product-price">₱51</div>
-                        <a class="order-btn messenger-btn"
-                            href="https://m.me/j/Abaou6VlKVnwtTLw/?send_source=gc%3Acopy_invite_link_c" target="_blank"
-                            rel="noopener noreferrer">Order via Messenger</a>
-                        <a class="order-btn discord-btn" href="#"
-                            onclick="alert('Discord ordering will be available soon. Stay tuned!')">Order via
-                            Discord</a>
-                    </div>
-                </div>
-
-
-
-
-
-
-
-            </div>
-
-        </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container footer-grid">
-            <div class="footer-column">
-                <h3>About</h3>
-                <p>Your trusted marketplace since 2025.</p>
-            </div>
-
-            <div class="footer-column">
-                <h3>Payment</h3>
-                <p>GCash</p>
-                <p>Binance</p>
-            </div>
-
-            <div class="footer-column">
-                <h3>Legal</h3>
-                <p>Terms</p>
-                <p>Privacy</p>
-            </div>
-
-            <div class="footer-column">
-                <h3>Store</h3>
-                <a href="https://www.facebook.com/share/g/18SvNHCSTW/" target="_blank"
-                    rel="noopener noreferrer">Facebook Group</a>
-                <a href="seller-profile.html">Seller's Profile</a>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            © 2026 Kaeyd
-        </div>
-    </footer>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 
 </body>
 
